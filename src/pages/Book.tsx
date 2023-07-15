@@ -5,7 +5,7 @@ interface IProps {
   }
 const Book = ({ book }:IProps) => {
   const {_id,thumbnail,genre,author,title,} = book
-  
+
     return (
       <Link to={`${_id}`}>
       <div
