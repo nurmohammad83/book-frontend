@@ -1,10 +1,15 @@
-import React, { FormEvent } from 'react';
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import  { FormEvent } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { createUser } from '../redux/features/user/userSlice';
 import { useAppDispatch } from '../redux/hook';
 
-const SignUp: React.FC = () => {
+
+const SignUp = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -14,9 +19,9 @@ const SignUp: React.FC = () => {
   const handleSignUp = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
-    const email:string = form.email.value;
-    const password:string = form.password.value;
-    const confirm:string = form.confirm.value;
+    const email = (form.email as HTMLInputElement).value;
+    const password = (form.password as HTMLInputElement).value;
+    const confirm = (form.confirm as HTMLInputElement).value;
     console.log(email, password, confirm);
     if (password.length < 6) {
       toast.warning('Password must be 6 characters', { autoClose: 700 });

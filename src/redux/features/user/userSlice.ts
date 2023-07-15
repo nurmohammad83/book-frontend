@@ -30,14 +30,14 @@ const initialState: IUser = {
 };
 
 export const createUser = createAsyncThunk(
-  "user/createUser",
+  "user/create-user",
   async ({ email, password }: ICredential) => {
     const data = await createUserWithEmailAndPassword(auth, email, password);
     return data.user.email;
   }
 );
 export const loginUser = createAsyncThunk(
-  "user/loginUser",
+  "user/login",
   async ({ email, password }: ICredential) => {
     const data = await signInWithEmailAndPassword(auth, email, password);
     return data.user.email;

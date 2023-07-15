@@ -15,7 +15,7 @@ interface Book {
   publicationDate: string;
 }
 
-const AddBook: React.FC<AddBookProps> = ({ onBookAdd }) => {
+const AddBook: React.FC<AddBookProps> = () => {
   const [book, setBook] = useState<Book>({
     title: '',
     author: '',

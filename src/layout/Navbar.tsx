@@ -1,9 +1,22 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../redux/hook";
+import { signOut } from "firebase/auth";
+import { auth } from "../components/firebase.config/firebase";
+import { setUser } from "../redux/features/user/userSlice";
 
 
-const Navbar = () => {
-  
+const Navbar : React.FC = () => {
+  const {user} = useAppSelector(state=>state.user)
+  const dispatch = useAppDispatch()
+
+  const handelLogout = ()=>{
+    signOut(auth).then(() => {
+      dispatch(setUser(null))
+    })
+  }
+
 
   return (
     <nav className="py-4 2xl:px-6 border-b">
@@ -20,23 +33,30 @@ const Navbar = () => {
           >
             <li>Book Store</li>
           </Link>
-          <Link to="/add-book" className="cursor-pointer">
-            <li>Add Book</li>
-          </Link>
-          <Link to="/add-book" className="cursor-pointer">
-            <li>Edit Book</li>
-          </Link>
+         {
+          user.email &&  <Link to="/add-book" className="cursor-pointer">
+          <li>Add Book</li>
+        </Link>
+         }
          
         </ul>
 
        
           <div className="flex items-center space-x-5 rounded-md bg-white">
-          <Link to="/login" className="cursor-pointer">
+         {
+          !user.email && <>
+           <Link to="/login" className="cursor-pointer">
             <li className="list-none">LogIn</li>
           </Link>
           <Link to="/signup" className="cursor-pointer">
             <li className="list-none">SignUp</li>
-          </Link>
+          </Link></>
+         }
+         {
+          user.email &&  <Link to="/signup" className="cursor-pointer">
+          <li className="list-none">SignUp</li>
+        </Link>
+         }
           </div>
        
       </div>
