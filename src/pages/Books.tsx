@@ -7,11 +7,10 @@ import Book from "./Book";
 import { IBook } from "../types";
 const Books = () => {
   const { data: books } = useGetBooksQuery(undefined);
-    console.log(books)
   return (
     <section>
       <h1 className=" text-center font-poppins mb-6  text-2xl">
-        All Furniture
+        All Books
       </h1>
 
       <div className="flex p-8 md:p-14">
