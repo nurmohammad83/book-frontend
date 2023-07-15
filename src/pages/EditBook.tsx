@@ -6,6 +6,7 @@ import TextInput from '../components/TextInput';
 import Button from '../components/Button';
 import { useParams } from 'react-router-dom';
 import { useEditBookMutation, useSingleBookQuery } from '../redux/features/book/bookApi';
+import { toast } from 'react-toastify';
 interface Book {
   title: string;
   author: string;
@@ -19,7 +20,6 @@ const EditBook: React.FC = () => {
   const {id} = useParams()
   const {data:currentBook} = useSingleBookQuery(id)
   const [editBook, {  isError, isSuccess }] = useEditBookMutation()
-console.log(currentBook)
   const [book, setBook] = useState<Book>({
     title: currentBook?.data?.title,
     author: currentBook?.data?.author,
@@ -40,7 +40,8 @@ console.log(currentBook)
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    editBook({id, book})
+    editBook({id, data:{book}})
+    toast.success('Edit Successfully')
     setBook({
       title: '',
       author: '',

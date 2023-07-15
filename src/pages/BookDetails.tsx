@@ -1,22 +1,24 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 import { useDeleteBookMutation, useSingleBookQuery } from '../redux/features/book/bookApi';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Button from '../components/Button';
 import TextArea from '../components/TextArea';
 import { useAppSelector } from '../redux/hook';
+import { toast } from 'react-toastify';
 
 const BookDetails = () => {
   const  {user} = useAppSelector (state=>state.user)
-  const [deleteBook] = useDeleteBookMutation();
   const {bookId} = useParams()
   const {data:book} = useSingleBookQuery(bookId)
-
+  const navigate  = useNavigate()
+  const [deleteBook,{isError,isSuccess}] = useDeleteBookMutation();
   const [reviews, setReviews] = useState<string[]>([]);
   const [reviewText, setReviewText] = useState('');
 
@@ -26,14 +28,16 @@ const BookDetails = () => {
     setReviewText('');
   };
 
-  const handleDeleteBook =async (id:string) => {
-    try {
-      await deleteBook(id).unwrap();
-    } catch (error) {
-      console.error('Delete book failed:', error);
-    }
+  const handleDeleteBook =() => {
+   if(book?.data?._id)deleteBook(book?.data?._id)
+   toast.success('Delete Successfully')
   };
 
+  useEffect(()=>{
+    if(isSuccess){
+      navigate('/')
+    }
+  },[isSuccess,navigate])
   return (
     <div className="container mx-auto mt-8">
       <div className="bg-white rounded-lg shadow p-8">
@@ -53,10 +57,14 @@ const BookDetails = () => {
         <Button  color='success'> <AiOutlineEdit className="mr-2" /> Edit Book</Button>
         </Link>
           
-         
-         <Button onClick={()=>handleDeleteBook(book?.data?._id)} color='danger'> <AiOutlineDelete className="mr-2" /> Delete Book</Button>
-          
+         <button onClick={handleDeleteBook}>
+
+         <Button  color='danger'> <AiOutlineDelete className="mr-2" /> Delete Book</Button>
+         </button>
        </div>
+       }
+       {
+        isError && <p className='text-center my-2 bg-red-500 text-white'>There is an error!</p>
        }
         <form onSubmit={handleReviewSubmit} className="mt-4">
           <TextArea  placeholder="Write your review..."
