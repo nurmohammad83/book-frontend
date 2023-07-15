@@ -1,11 +1,11 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import TextInput from '../components/TextInput';
 import Button from '../components/Button';
-
-interface AddBookProps {
-  onBookAdd: (book: Book) => void;
-}
-
+import { useParams } from 'react-router-dom';
+import { useEditBookMutation, useSingleBookQuery } from '../redux/features/book/bookApi';
 interface Book {
   title: string;
   author: string;
@@ -15,15 +15,20 @@ interface Book {
   publicationDate: string;
 }
 
-const EditBook: React.FC<AddBookProps> = () => {
+const EditBook: React.FC = () => {
+  const {id} = useParams()
+  const {data:currentBook} = useSingleBookQuery(id)
+  const [editBook, {  isError, isSuccess }] = useEditBookMutation()
+console.log(currentBook)
   const [book, setBook] = useState<Book>({
-    title: '',
-    author: '',
-    genre: '',
-    userEmail: '',
-    thumbnail: '',
-    publicationDate: '',
+    title: currentBook?.data?.title,
+    author: currentBook?.data?.author,
+    genre: currentBook?.data?.genre,
+    userEmail: currentBook?.data?.userEmail,
+    thumbnail: currentBook?.data?.thumbnail,
+    publicationDate:currentBook?.data?.publicationDate,
   });
+
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -35,7 +40,7 @@ const EditBook: React.FC<AddBookProps> = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(book)
+    editBook({id, book})
     setBook({
       title: '',
       author: '',
@@ -92,6 +97,8 @@ const EditBook: React.FC<AddBookProps> = () => {
 
     <Button type='submit'>Edit Book</Button>
     </form>
+    {isSuccess &&  <p className='bg-green-400 text-white'>Book was update successfully</p>}
+               {isError &&   <p className='bg-red-400 text-white'>Book was an error</p>}
   </div>
 </div>
   );

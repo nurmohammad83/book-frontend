@@ -5,10 +5,6 @@ import Button from '../components/Button';
 import { useAppSelector } from '../redux/hook';
 import { useAddBookMutation } from '../redux/features/book/bookApi';
 
-interface AddBookProps {
-  onBookAdd: (book: Book) => void;
-}
-
 interface Book {
   title: string;
   author: string;
@@ -18,7 +14,7 @@ interface Book {
   publicationDate: string;
 }
 
-const AddBook: React.FC<AddBookProps> = () => {
+const AddBook: React.FC = () => {
   const {user} = useAppSelector(state=>state.user)
 
   const [addVideo, {  isError, isLoading, isSuccess }] = useAddBookMutation()
@@ -110,7 +106,7 @@ const AddBook: React.FC<AddBookProps> = () => {
     <Button type='submit'>Add Book</Button>
     </form>
              {isSuccess &&  <p className='bg-green-400 text-white'>Book was added successfully</p>}
-               {isError &&   <p className='bg-red-400 text-white'>Book was added successfully</p>}
+               {isError &&   <p className='bg-red-400 text-white'>Book was an error</p>}
   </div>
 </div>
   );

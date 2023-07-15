@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -48,7 +49,7 @@ const BookDetails = () => {
      
        {
         user.email === book?.data?.userEmail && <div className="flex justify-between items-center mt-4">
-        <Link to='/edit-book'>
+        <Link to={`/edit-book/${bookId}`}>
         <Button  color='success'> <AiOutlineEdit className="mr-2" /> Edit Book</Button>
         </Link>
           

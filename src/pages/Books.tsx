@@ -61,7 +61,7 @@ const Books = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t p-2  md:p-8">
         {books?.data?.data?.length >= 0
           ? books?.data?.data
-              ?.map((book:IBook) => <Book book={book} />)
+              ?.map((book:IBook) => <Book key={book._id} book={book} />)
           : "Not Products found"}
         </div>
       </div>
