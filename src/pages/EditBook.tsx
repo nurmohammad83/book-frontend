@@ -15,7 +15,7 @@ interface Book {
   publicationDate: string;
 }
 
-const AddBook: React.FC<AddBookProps> = () => {
+const EditBook: React.FC<AddBookProps> = () => {
   const [book, setBook] = useState<Book>({
     title: '',
     author: '',
@@ -50,7 +50,7 @@ const AddBook: React.FC<AddBookProps> = () => {
     <div className="mx-auto max-w-screen-xl px-4  sm:px-6 lg:px-8">
   <div className="mx-auto max-w-lg">
     <h1 className="text-center text-2xl font-bold text-indigo-600 sm:text-3xl">
-      Add Your Book
+      Edit Your Book
     </h1>
 
     <form
@@ -90,11 +90,11 @@ const AddBook: React.FC<AddBookProps> = () => {
             value={book.thumbnail}
             onChange={handleInputChange}/>
 
-    <Button type='submit'>Add Book</Button>
+    <Button type='submit'>Edit Book</Button>
     </form>
   </div>
 </div>
   );
 };
 
-export default AddBook;
+export default EditBook;

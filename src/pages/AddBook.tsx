@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import TextInput from '../components/TextInput';
 import Button from '../components/Button';
+import { useAppSelector } from '../redux/hook';
+import { useAddBookMutation } from '../redux/features/book/bookApi';
 
 interface AddBookProps {
   onBookAdd: (book: Book) => void;
@@ -10,17 +13,21 @@ interface Book {
   title: string;
   author: string;
   genre: string;
-  userEmail: string;
+  userEmail: string | null ;
   thumbnail: string;
   publicationDate: string;
 }
 
 const AddBook: React.FC<AddBookProps> = () => {
+  const {user} = useAppSelector(state=>state.user)
+
+  const [addVideo, {  isError, isLoading, isSuccess }] = useAddBookMutation()
+
   const [book, setBook] = useState<Book>({
     title: '',
     author: '',
     genre: '',
-    userEmail: '',
+    userEmail:user.email,
     thumbnail: '',
     publicationDate: '',
   });
@@ -35,12 +42,12 @@ const AddBook: React.FC<AddBookProps> = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(book)
+    addVideo(book)
     setBook({
       title: '',
       author: '',
       genre: '',
-      userEmail: '',
+      userEmail: user.email,
       thumbnail: '',
       publicationDate: '',
     });
@@ -80,18 +87,30 @@ const AddBook: React.FC<AddBookProps> = () => {
      <TextInput type="email"
             id="userEmail"
             name="userEmail"
+            disabled
             placeholder="Enter your email"
-            value={book.userEmail}
-            onChange={handleInputChange}/>
+            defaultValue={user.email!}
+            />
     <TextInput type="text"
             id="thumbnail"
             name="thumbnail"
+            
             placeholder="Enter thumbnail URL"
             value={book.thumbnail}
+            onChange={handleInputChange}/>
+    <TextInput type="date"
+
+            id="publicationDate"
+            name="publicationDate"
+            
+            placeholder="Enter publicationDate "
+            value={book.publicationDate}
             onChange={handleInputChange}/>
 
     <Button type='submit'>Add Book</Button>
     </form>
+             {isSuccess &&  <p className='bg-green-400 text-white'>Book was added successfully</p>}
+               {isError &&   <p className='bg-red-400 text-white'>Book was added successfully</p>}
   </div>
 </div>
   );

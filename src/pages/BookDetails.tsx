@@ -1,13 +1,18 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useState, FormEvent } from 'react';
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
-import { useSingleBookQuery } from '../redux/features/book/bookApi';
-import { useParams } from 'react-router-dom';
+import { useDeleteBookMutation, useSingleBookQuery } from '../redux/features/book/bookApi';
+import { Link, useParams } from 'react-router-dom';
 import Button from '../components/Button';
 import TextArea from '../components/TextArea';
+import { useAppSelector } from '../redux/hook';
 
 const BookDetails = () => {
+  const  {user} = useAppSelector (state=>state.user)
+  const [deleteBook] = useDeleteBookMutation();
   const {bookId} = useParams()
   const {data:book} = useSingleBookQuery(bookId)
 
@@ -20,8 +25,12 @@ const BookDetails = () => {
     setReviewText('');
   };
 
-  const handleDeleteBook = () => {
-    console.log('Book deleted');
+  const handleDeleteBook =async (id:string) => {
+    try {
+      await deleteBook(id).unwrap();
+    } catch (error) {
+      console.error('Delete book failed:', error);
+    }
   };
 
   return (
@@ -37,13 +46,17 @@ const BookDetails = () => {
         <img src={book?.data?.thumbnail} alt={book?.data?.title} className="w-64 h-auto mb-4" />
        </div>
      
-        <div className="flex justify-between items-center mt-4">
-         <Button color='success'> <AiOutlineEdit className="mr-2" /> Edit Book</Button>
-           
+       {
+        user.email === book?.data?.userEmail && <div className="flex justify-between items-center mt-4">
+        <Link to='/edit-book'>
+        <Button  color='success'> <AiOutlineEdit className="mr-2" /> Edit Book</Button>
+        </Link>
           
-          <Button onClick={()=>handleDeleteBook()} color='danger'> <AiOutlineDelete className="mr-2" /> Delete Book</Button>
-           
-        </div>
+         
+         <Button onClick={()=>handleDeleteBook(book?.data?._id)} color='danger'> <AiOutlineDelete className="mr-2" /> Delete Book</Button>
+          
+       </div>
+       }
         <form onSubmit={handleReviewSubmit} className="mt-4">
           <TextArea  placeholder="Write your review..."
             value={reviewText}

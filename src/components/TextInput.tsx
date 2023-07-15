@@ -5,6 +5,8 @@ interface TextInputProps {
   id?:string;
   name?: string;
   placeholder?: string;
+  defaultValue?:string
+  disabled?:boolean;
   value?: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
@@ -19,6 +21,7 @@ const TextInput: React.FC<TextInputProps> = ({
         <input
           type={type}
           {...props}
+    
           className="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm"
           required
         />

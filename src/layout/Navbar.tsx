@@ -53,9 +53,9 @@ const Navbar : React.FC = () => {
           </Link></>
          }
          {
-          user.email &&  <Link to="/signup" className="cursor-pointer">
-          <li className="list-none">SignUp</li>
-        </Link>
+          user.email &&  <button className="cursor-pointer" onClick={()=>handelLogout()}>
+          <li className="list-none">Logout</li>
+        </button>
          }
           </div>
        
