@@ -13,13 +13,8 @@ const Reviews = ({id}:IProps) => {
     const {data} = useGetReviewsQuery(id)
     const [reviewText, setReviewText] = useState<string>('');
     console.log(reviewText)
-    const [addReview,{isSuccess,isError}]  =useAddReviewMutation()
+    const [addReview,]  =useAddReviewMutation()
   
-    if(isSuccess){
-        toast('Review add successfully')
-    }if(isError){
-        toast('Review not added!')
-    }
     const handleReviewSubmit = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const options = {

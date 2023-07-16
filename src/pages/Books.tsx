@@ -10,14 +10,6 @@ const Books = () => {
   const [searchText, onSearch] = useState("");
   const { data: books,isError,isLoading} = useGetBooksQuery({searchText,selectedValue});
 
-
-
-
-
-
-
-
-
   const handleChange = (event:ChangeEvent<HTMLSelectElement>) => {
    setSelectedValue(event.target.value);
   };
@@ -68,7 +60,7 @@ const Books = () => {
         {books?.data?.data?.length >= 0
           ? books?.data?.data
               ?.map((book:IBook) => <Book key={book._id} book={book} />)
-          :isError && <Error message="There was an error" /> }
+          :isError && <Error message="Books Not Found" /> }
         </div>
       </div>
     </div>

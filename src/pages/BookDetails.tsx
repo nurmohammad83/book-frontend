@@ -28,7 +28,7 @@ const BookDetails = () => {
     }
   },[isSuccess,navigate])
   return (
-    <div className="container mx-auto mt-8">
+    <div className="container mx-auto my-4">
       <div className="bg-white rounded-lg shadow p-8">
        <div className='flex justify-between items-center'>
          <div>
@@ -54,7 +54,7 @@ const BookDetails = () => {
        }
        {isLoading && <LoadingSpinner/>}
                 {isError && (
-                    <Error message="There was an error adding book!" />
+                    <Error message="No book found!" />
                 )}
        
         <Reviews id={book?.data?._id}/>

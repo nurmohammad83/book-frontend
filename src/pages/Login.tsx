@@ -3,10 +3,11 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { loginUser } from "../redux/features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
 import toast from 'react-hot-toast'
+import TextInput from "../components/TextInput";
 const LogIn: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate()
-  const from = location.state?.from?.pathname || '/'
+  const from = location?.state?.from?.pathname || '/'
   const { error } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
@@ -37,27 +38,19 @@ const LogIn: React.FC = () => {
           <label htmlFor="username" className="block dark:text-gray-400">
             Email
           </label>
-          <input
-            type="text"
+         <TextInput  type="text"
             name="email"
             id="email"
-            placeholder="Username"
-            className="w-full px-4 py-3 rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:dark:border-violet-400"
-            required
-          />
+            placeholder="Email"/>
         </div>
         <div className="space-y-1 text-sm">
           <label htmlFor="password" className="block dark:text-gray-400">
             Password
           </label>
-          <input
-            type="password"
+         <TextInput type="password"
             name="password"
             id="password"
-            placeholder="Password"
-            className="w-full px-4 py-3 rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:dark:border-violet-400"
-            required
-          />
+            placeholder="Password"/>
         </div>
         <p className="text-red-600">{error}</p>
         <button className="block w-full p-3 text-center rounded-sm text-white font-semibold bg-violet-400">

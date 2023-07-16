@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import  toast from 'react-hot-toast'
 import { createUser } from '../redux/features/user/userSlice';
 import { useAppDispatch } from '../redux/hook';
+import TextInput from '../components/TextInput';
 
 
 const SignUp = () => {
@@ -48,38 +49,26 @@ const SignUp = () => {
           <label htmlFor="username" className="block dark:text-gray-400">
             Email
           </label>
-          <input
-            type="text"
+         <TextInput  type="text"
             name="email"
-            id="email"
-            placeholder="Email"
-            className="w-full px-4 py-3 rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:dark:border-violet-400"
-            required
-          />
+            placeholder='Email'
+            id="email"/>
         </div>
         <div className="space-y-1 text-sm">
           <label htmlFor="password" className="block dark:text-gray-400">
             Password
           </label>
-          <input
-            type="password"
+         <TextInput  type="password"
             name="password"
             id="password"
-            placeholder="Password"
-            className="w-full px-4 py-3 rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:dark:border-violet-400"
-            required
-          />
+            placeholder="Password"/>
           <label htmlFor="password" className="block dark:text-gray-400">
             Confirm Password
           </label>
-          <input
-            type="password"
+          <TextInput type="password"
+          placeholder='Confirm  Password'
             name="confirm"
-            id="confirm"
-            placeholder="Password"
-            className="w-full px-4 py-3 rounded-md dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:dark:border-violet-400"
-            required
-          />
+            id="confirm"/>
         </div>
         <button
           type="submit"
