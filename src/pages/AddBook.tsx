@@ -17,7 +17,7 @@ interface Book {
 const AddBook: React.FC = () => {
   const {user} = useAppSelector(state=>state.user)
 
-  const [addBook, {  isError, isLoading, isSuccess }] = useAddBookMutation()
+  const [addBook, {  isError, isSuccess }] = useAddBookMutation()
 
   const [book, setBook] = useState<Book>({
     title: '',
