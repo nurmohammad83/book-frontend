@@ -17,7 +17,7 @@ interface Book {
 const AddBook: React.FC = () => {
   const {user} = useAppSelector(state=>state.user)
 
-  const [addVideo, {  isError, isLoading, isSuccess }] = useAddBookMutation()
+  const [addBook, {  isError, isLoading, isSuccess }] = useAddBookMutation()
 
   const [book, setBook] = useState<Book>({
     title: '',
@@ -38,7 +38,8 @@ const AddBook: React.FC = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    addVideo(book)
+    addBook(book)
+    alert('Added Book')
     setBook({
       title: '',
       author: '',

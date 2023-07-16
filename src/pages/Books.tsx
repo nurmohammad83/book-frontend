@@ -54,6 +54,7 @@ const Books = () => {
             className="border border-gray-300 rounded-md px-4 py-2"
           >
             <option value="">Sort by</option>
+            <option value="title ">Title </option>
             <option value="genre ">Genre </option>
             <option value="publicationDate">publicationDate</option>
           </select>

@@ -4,14 +4,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { useState, FormEvent, useEffect } from 'react';
+import {  useEffect } from 'react';
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 import { useDeleteBookMutation, useSingleBookQuery } from '../redux/features/book/bookApi';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Button from '../components/Button';
-import TextArea from '../components/TextArea';
 import { useAppSelector } from '../redux/hook';
 import { toast } from 'react-toastify';
+import Reviews from '../components/Reviews';
 
 const BookDetails = () => {
   const  {user} = useAppSelector (state=>state.user)
@@ -19,14 +19,7 @@ const BookDetails = () => {
   const {data:book} = useSingleBookQuery(bookId)
   const navigate  = useNavigate()
   const [deleteBook,{isError,isSuccess}] = useDeleteBookMutation();
-  const [reviews, setReviews] = useState<string[]>([]);
-  const [reviewText, setReviewText] = useState('');
-
-  const handleReviewSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setReviews((prevReviews) => [...prevReviews, reviewText]);
-    setReviewText('');
-  };
+ 
 
   const handleDeleteBook =() => {
    if(book?.data?._id)deleteBook(book?.data?._id)
@@ -43,10 +36,10 @@ const BookDetails = () => {
       <div className="bg-white rounded-lg shadow p-8">
        <div className='flex justify-between items-center'>
          <div>
-      <h1 className="text-2xl font-bold mb-4">{book?.data?.title}</h1>
-        <p className="text-lg font-semibold mb-4">{book?.data?.author}</p>
-        <p className="text-lg mb-4">{book?.data?.genre}</p>
-        <p className="text-lg mb-4">{book?.data?.publicationDate}</p>
+      <h1 className="text-2xl font-bold mb-4">Title: {book?.data?.title}</h1>
+        <p className="text-lg font-semibold mb-4">Author: {book?.data?.author}</p>
+        <p className="text-lg mb-4">Genre: {book?.data?.genre}</p>
+        <p className="text-lg mb-4">Publish Date: {book?.data?.publicationDate}</p>
       </div>
         <img src={book?.data?.thumbnail} alt={book?.data?.title} className="w-64 h-auto mb-4" />
        </div>
@@ -66,26 +59,8 @@ const BookDetails = () => {
        {
         isError && <p className='text-center my-2 bg-red-500 text-white'>There is an error!</p>
        }
-        <form onSubmit={handleReviewSubmit} className="mt-4">
-          <TextArea  placeholder="Write your review..."
-            value={reviewText}
-            onChange={(e) => setReviewText(e.target.value)}/>
-          <Button  type='submit'> Submit Review</Button>
-           
-         
-        </form>
-        <h2 className="text-xl py-4 font-semibold mb-2">Reviews</h2>
-        {reviews.length > 0 ? (
-          <ul>
-            {reviews.map((review, index) => (
-              <li key={index} className="mb-2">
-                {review}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No reviews yet.</p>
-        )}
+       
+        <Reviews id={book?.data?._id}/>
       </div>
     </div>
   );
