@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-floating-promises */
+
 import { useAddReviewMutation, useGetReviewsQuery } from "../redux/features/book/bookApi";
 import { useState, FormEvent } from 'react';
 import toast from 'react-hot-toast'

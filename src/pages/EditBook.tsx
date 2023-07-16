@@ -1,12 +1,10 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import TextInput from '../components/TextInput';
 import Button from '../components/Button';
 import { useParams } from 'react-router-dom';
 import { useEditBookMutation, useSingleBookQuery } from '../redux/features/book/bookApi';
 import toast from 'react-hot-toast' 
+import Error from '../components/Error';
 interface Book {
   title: string;
   author: string;
@@ -101,7 +99,9 @@ const EditBook: React.FC = () => {
     <Button type='submit'>Edit Book</Button>
     </form>
     {isSuccess &&  <p className='bg-green-400 text-white'>Book was update successfully</p>}
-               {isError &&   <p className='bg-red-400 text-white'>Book was an error</p>}
+                {isError && (
+                    <Error message="There was an error adding book!" />
+                )}
   </div>
 </div>
   );

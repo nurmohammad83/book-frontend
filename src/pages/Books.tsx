@@ -1,16 +1,22 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useGetBooksQuery } from "../redux/features/book/bookApi";
 import Book from "./Book";
 import { IBook } from "../types";
 import { useEffect, useState,ChangeEvent } from "react";
+import Error from "../components/Error";
+import LoadingSpinner from "../components/LoadingSpinner";
 const Books = () => {
   const [selectedValue, setSelectedValue] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [searchText, onSearch] = useState("");
-  const { data: books } = useGetBooksQuery({searchText,selectedValue});
+  const { data: books,isError,isLoading} = useGetBooksQuery({searchText,selectedValue});
+
+
+
+
+
+
+
+
 
   const handleChange = (event:ChangeEvent<HTMLSelectElement>) => {
    setSelectedValue(event.target.value);
@@ -58,10 +64,11 @@ const Books = () => {
           </select>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-t p-2  md:p-8">
+          {isLoading &&   <LoadingSpinner />}
         {books?.data?.data?.length >= 0
           ? books?.data?.data
               ?.map((book:IBook) => <Book key={book._id} book={book} />)
-          : "Not Products found"}
+          :isError && <Error message="There was an error" /> }
         </div>
       </div>
     </div>

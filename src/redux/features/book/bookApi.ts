@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { api } from "../../api/apiSlice";
 
 const bookApi = api.injectEndpoints({

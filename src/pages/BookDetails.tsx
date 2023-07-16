@@ -1,9 +1,3 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-/* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {  useEffect } from 'react';
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 import { useDeleteBookMutation, useSingleBookQuery } from '../redux/features/book/bookApi';
@@ -12,13 +6,15 @@ import Button from '../components/Button';
 import { useAppSelector } from '../redux/hook';
 import Reviews from '../components/Reviews';
 import toast from "react-hot-toast";
+import Error from '../components/Error';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const BookDetails = () => {
   const  {user} = useAppSelector (state=>state.user)
   const {bookId} = useParams()
-  const {data:book} = useSingleBookQuery(bookId)
+  const {data:book,isLoading,isError} = useSingleBookQuery(bookId)
   const navigate  = useNavigate()
-  const [deleteBook,{isError,isSuccess}] = useDeleteBookMutation();
+  const [deleteBook,{isSuccess}] = useDeleteBookMutation();
  
 
   const handleDeleteBook =() => {
@@ -56,9 +52,10 @@ const BookDetails = () => {
          </button>
        </div>
        }
-       {
-        isError && <p className='text-center my-2 bg-red-500 text-white'>There is an error!</p>
-       }
+       {isLoading && <LoadingSpinner/>}
+                {isError && (
+                    <Error message="There was an error adding book!" />
+                )}
        
         <Reviews id={book?.data?._id}/>
       </div>

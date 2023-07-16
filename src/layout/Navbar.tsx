@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
 import toast from 'react-hot-toast'
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
 import { signOut } from "firebase/auth";
 import { auth } from "../components/firebase.config/firebase";
 import { setUser } from "../redux/features/user/userSlice";
-
 
 const Navbar : React.FC = () => {
   const {user} = useAppSelector(state=>state.user)

@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-floating-promises */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, { FormEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { loginUser } from "../redux/features/user/userSlice";
