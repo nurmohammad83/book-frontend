@@ -6,7 +6,7 @@ import TextInput from '../components/TextInput';
 import Button from '../components/Button';
 import { useParams } from 'react-router-dom';
 import { useEditBookMutation, useSingleBookQuery } from '../redux/features/book/bookApi';
-import { toast } from 'react-toastify';
+import toast from 'react-hot-toast' 
 interface Book {
   title: string;
   author: string;
@@ -37,11 +37,13 @@ const EditBook: React.FC = () => {
       [name]: value,
     }));
   };
+  if(isSuccess){
+    toast('Book add successfully')
 
+  }
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     editBook({id, data:{book}})
-    toast.success('Edit Successfully')
     setBook({
       title: '',
       author: '',

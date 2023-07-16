@@ -4,7 +4,7 @@ import TextInput from '../components/TextInput';
 import Button from '../components/Button';
 import { useAppSelector } from '../redux/hook';
 import { useAddBookMutation } from '../redux/features/book/bookApi';
-
+import toast from 'react-hot-toast'
 interface Book {
   title: string;
   author: string;
@@ -19,6 +19,10 @@ const AddBook: React.FC = () => {
 
   const [addBook, {  isError, isSuccess }] = useAddBookMutation()
 
+  if(isSuccess){
+    toast('Book add successfully')
+
+  }
   const [book, setBook] = useState<Book>({
     title: '',
     author: '',
