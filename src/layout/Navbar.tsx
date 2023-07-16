@@ -22,7 +22,7 @@ const Navbar : React.FC = () => {
     <nav className="py-4 2xl:px-6 border-b">
       <div className="container flex items-center justify-between mx-auto">
         <Link to="/">
-         <h1 className="text-xl">BookStore</h1>
+         <h1 className="text-xl">GenericStore</h1>
         </Link>
 
         <ul className="hidden md:flex items-center space-x-6">
