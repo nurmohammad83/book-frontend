@@ -1,8 +1,9 @@
-import { ToastContainer } from "react-toastify"
 import Root from "./layout/Root"
 import {useEffect} from 'react'
 import { useAppDispatch } from "./redux/hook"
 import { setLoading, setUser } from "./redux/features/user/userSlice"
+
+
 import { auth } from "./components/firebase.config/firebase"
 import { onAuthStateChanged } from "firebase/auth"
 
@@ -19,8 +20,9 @@ const App = () => {
   },[dispatch])
   return (
     <div>
+     
       <Root />
-      <ToastContainer />
+     
     </div>
   )
 }

@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { useAddReviewMutation, useGetReviewsQuery } from "../redux/features/book/bookApi";
 import { useState, FormEvent } from 'react';
+import toast from 'react-hot-toast'
 import Button from "./Button";
 import TextArea from "./TextArea";
 import { useAppSelector } from "../redux/hook";
@@ -15,8 +16,13 @@ const Reviews = ({id}:IProps) => {
     const {data} = useGetReviewsQuery(id)
     const [reviewText, setReviewText] = useState<string>('');
     console.log(reviewText)
-    const [addReview]  =useAddReviewMutation()
+    const [addReview,{isSuccess,isError}]  =useAddReviewMutation()
   
+    if(isSuccess){
+        toast('Review add successfully')
+    }if(isError){
+        toast('Review not added!')
+    }
     const handleReviewSubmit = (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const options = {

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-
+import toast from 'react-hot-toast'
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
 import { signOut } from "firebase/auth";
@@ -14,6 +14,7 @@ const Navbar : React.FC = () => {
   const handelLogout = ()=>{
     signOut(auth).then(() => {
       dispatch(setUser(null))
+      toast("Log Out", {duration:2000});
     })
   }
 

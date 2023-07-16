@@ -6,12 +6,11 @@ import React, { FormEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { loginUser } from "../redux/features/user/userSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
-
+import toast from 'react-hot-toast'
 const LogIn: React.FC = () => {
   const location = useLocation();
-
-  const from = location.state?.from?.pathname || "/";
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const from = location.state?.from?.pathname || '/'
   const { error } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
@@ -20,8 +19,13 @@ const LogIn: React.FC = () => {
     const form = e.currentTarget;
     const email = (form.email as HTMLInputElement).value;
     const password = (form.password as HTMLInputElement).value;
-    dispatch(loginUser({ email: email, password: password }));
-    navigate(from, { replace: true });
+    if(!email && !password ){
+      return alert('Please enter your email & password')
+    }else{
+      dispatch(loginUser({ email: email, password: password }));
+      toast('Login Successfully')
+      navigate(from, {replace:true})
+    }
   };
 
   return (

@@ -11,6 +11,7 @@ const TextArea: React.FC<TextInputProps> = ({ ...props }: TextInputProps) => {
   return (
     <textarea
       {...props}
+      required
       className="w-full p-2 border border-gray-300 rounded"
     ></textarea>
   );

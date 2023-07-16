@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import  { FormEvent } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import  toast from 'react-hot-toast'
 import { createUser } from '../redux/features/user/userSlice';
 import { useAppDispatch } from '../redux/hook';
 
@@ -24,15 +24,17 @@ const SignUp = () => {
     const confirm = (form.confirm as HTMLInputElement).value;
     console.log(email, password, confirm);
     if (password.length < 6) {
-      toast.warning('Password must be 6 characters', { autoClose: 700 });
+      toast("Password must be 6 character", {duration:2000});
+
       return;
     }
     if (password !== confirm) {
-      toast.warning('Password did not match', { autoClose: 500 });
+      toast("Password did not match", {duration:2000});
       return;
     } else {
       dispatch(createUser({ email: email, password: password }));
       navigate(from, { replace: true });
+      toast("Sign up Successfully", {duration:2000});
       form.reset();
     }
   };

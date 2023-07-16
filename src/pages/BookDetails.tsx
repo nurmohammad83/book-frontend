@@ -10,8 +10,8 @@ import { useDeleteBookMutation, useSingleBookQuery } from '../redux/features/boo
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Button from '../components/Button';
 import { useAppSelector } from '../redux/hook';
-import { toast } from 'react-toastify';
 import Reviews from '../components/Reviews';
+import toast from "react-hot-toast";
 
 const BookDetails = () => {
   const  {user} = useAppSelector (state=>state.user)
@@ -23,7 +23,7 @@ const BookDetails = () => {
 
   const handleDeleteBook =() => {
    if(book?.data?._id)deleteBook(book?.data?._id)
-   toast.success('Delete Successfully')
+   toast("Delete", {duration:3000});
   };
 
   useEffect(()=>{

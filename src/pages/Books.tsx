@@ -11,12 +11,10 @@ const Books = () => {
   const [inputValue, setInputValue] = useState("");
   const [searchText, onSearch] = useState("");
   const { data: books } = useGetBooksQuery({searchText,selectedValue});
- 
+
   const handleChange = (event:ChangeEvent<HTMLSelectElement>) => {
-    setSelectedValue(event.target.value);
+   setSelectedValue(event.target.value);
   };
-  
-  console.log(searchText);
   
   useEffect(() => {
     const timer = setTimeout(() => {
