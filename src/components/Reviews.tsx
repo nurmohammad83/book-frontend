@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import { useAddReviewMutation, useGetCommentsQuery } from "../redux/features/book/bookApi";
+import { useAddReviewMutation, useGetReviewsQuery } from "../redux/features/book/bookApi";
 import { useState, FormEvent } from 'react';
 import Button from "./Button";
 import TextArea from "./TextArea";
@@ -12,7 +12,7 @@ interface IProps {
 }
 const Reviews = ({id}:IProps) => {
     const {user}=useAppSelector(state=>state.user)
-    const {data} = useGetCommentsQuery(id)
+    const {data} = useGetReviewsQuery(id)
     const [reviewText, setReviewText] = useState<string>('');
     console.log(reviewText)
     const [addReview]  =useAddReviewMutation()
