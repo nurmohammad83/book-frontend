@@ -15,8 +15,8 @@ const BookDetails = () => {
   const navigate  = useNavigate()
   const {data:book,isLoading,isError} = useSingleBookQuery(bookId)
   const [deleteBook,{isSuccess}] = useDeleteBookMutation();
-  const [addToReadinglist,{data:readBook,isSuccess:success,isError:error}] = useAddToReadingMutation()
-console.log(readBook)
+  const [addToReadinglist,{isSuccess:success,isError:error}] = useAddToReadingMutation()
+
   const handleDeleteBook =() => {
     const agree = confirm("Are you sure delete this book?");
     if (agree) {
