@@ -1,7 +1,6 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import TextInput from '../components/TextInput';
 import Button from '../components/Button';
-import { useAppSelector } from '../redux/hook';
 import { useAddBookMutation } from '../redux/features/book/bookApi';
 import toast from 'react-hot-toast'
 import Error from '../components/Error';
@@ -9,24 +8,20 @@ interface Book {
   title: string;
   author: string;
   genre: string;
-  userEmail: string | null ;
   thumbnail: string;
   publicationDate: string;
 }
 
 const AddBook: React.FC = () => {
-  const {user} = useAppSelector(state=>state.user)
-
-  const [addBook, {  isError, isSuccess }] = useAddBookMutation()
+  const [addBook, {data,  isError, isSuccess }] = useAddBookMutation()
 
   if(isSuccess){
-    toast('Book add successfully')
+    toast(data.message)
   }
   const [book, setBook] = useState<Book>({
     title: '',
     author: '',
     genre: '',
-    userEmail:user.email,
     thumbnail: '',
     publicationDate: '',
   });
@@ -42,12 +37,10 @@ const AddBook: React.FC = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     addBook(book)
-    alert('Added Book')
     setBook({
       title: '',
       author: '',
       genre: '',
-      userEmail: user.email,
       thumbnail: '',
       publicationDate: '',
     });
@@ -84,13 +77,6 @@ const AddBook: React.FC = () => {
             placeholder="Enter book genre"
             value={book.genre}
             onChange={handleInputChange}/>
-     <TextInput type="email"
-            id="userEmail"
-            name="userEmail"
-            disabled
-            placeholder="Enter your email"
-            defaultValue={user.email!}
-            />
     <TextInput type="text"
             id="thumbnail"
             name="thumbnail"
@@ -109,9 +95,6 @@ const AddBook: React.FC = () => {
 
     <Button type='submit'>Add Book</Button>
     </form>
-             {isSuccess && (
-                    <p className='text-lg bg-green-400 opacity-25 text-white py-2'>Book was added successfully</p>
-                )}
                 {isError && (
                     <Error message="There was an error adding book!" />
                 )}

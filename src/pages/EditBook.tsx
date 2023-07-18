@@ -120,7 +120,7 @@ const EditBook: React.FC = () => {
             Book was update successfully
           </p>
         )}
-        {isError && <Error message="There was an error adding book!" />}
+        {isError && <Error message="There was an error editing book!" />}
       </div>
     </div>
   );

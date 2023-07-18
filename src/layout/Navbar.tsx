@@ -1,19 +1,19 @@
 import toast from 'react-hot-toast'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
-import { signOut } from "firebase/auth";
-import { auth } from "../components/firebase.config/firebase";
-import { setUser } from "../redux/features/user/userSlice";
+import { logOut } from '../redux/features/auth/authSlice';
+import Button from '../components/Button';
 
 const Navbar : React.FC = () => {
-  const {user} = useAppSelector(state=>state.user)
+  const {accessToken,email} = useAppSelector(state=>state.auth)
+  const navigate = useNavigate();
   const dispatch = useAppDispatch()
-
+console.log(email)
   const handelLogout = ()=>{
-    signOut(auth).then(() => {
-      dispatch(setUser(null))
-      toast("Log Out", {duration:2000});
-    })
+    localStorage.removeItem("auth");
+    dispatch(logOut());
+    toast('Log out',{duration:2000})
+    navigate("/");
   }
 
 
@@ -21,7 +21,7 @@ const Navbar : React.FC = () => {
     <nav className="py-4 2xl:px-6 border-b">
       <div className="container flex items-center justify-between mx-auto">
         <Link to="/">
-         <h1 className="text-xl">GenericStore</h1>
+         <h1 className="text-lg font-extrabold text-teal-500">GeniusStore</h1>
         </Link>
 
         <ul className="hidden md:flex items-center space-x-6">
@@ -33,9 +33,14 @@ const Navbar : React.FC = () => {
             <li>Book Store</li>
           </Link>
          {
-          user.email &&  <Link to="/add-book" className="cursor-pointer">
-          <li>Add Book</li>
+          accessToken &&  <>
+          <Link to="/wishlist" className="cursor-pointer">
+          <li>WishList</li>
         </Link>
+          <Link to="/readlist" className="cursor-pointer">
+          <li>ReadingList</li>
+        </Link>
+          </>
          }
          
         </ul>
@@ -43,18 +48,14 @@ const Navbar : React.FC = () => {
        
           <div className="flex items-center space-x-5 rounded-md bg-white">
          {
-          !user.email && <>
+          !accessToken && <>
            <Link to="/login" className="cursor-pointer">
             <li className="list-none">LogIn</li>
           </Link>
-          <Link to="/signup" className="cursor-pointer">
-            <li className="list-none">SignUp</li>
-          </Link></>
+          </>
          }
          {
-          user.email &&  <button className="cursor-pointer" onClick={()=>handelLogout()}>
-          <li className="list-none">Logout</li>
-        </button>
+          accessToken &&  <Button onClick={handelLogout}>Logout</Button>
          }
           </div>
        

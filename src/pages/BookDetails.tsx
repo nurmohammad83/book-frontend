@@ -1,6 +1,6 @@
 import {  useEffect } from 'react';
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
-import { useDeleteBookMutation, useSingleBookQuery } from '../redux/features/book/bookApi';
+import { useAddToReadingMutation, useDeleteBookMutation, useSingleBookQuery } from '../redux/features/book/bookApi';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Button from '../components/Button';
 import { useAppSelector } from '../redux/hook';
@@ -10,17 +10,37 @@ import Error from '../components/Error';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const BookDetails = () => {
-  const  {user} = useAppSelector (state=>state.user)
+  const  {email} = useAppSelector (state=>state.auth)
   const {bookId} = useParams()
-  const {data:book,isLoading,isError} = useSingleBookQuery(bookId)
   const navigate  = useNavigate()
+  const {data:book,isLoading,isError} = useSingleBookQuery(bookId)
   const [deleteBook,{isSuccess}] = useDeleteBookMutation();
- 
-
+  const [addToReadinglist,{data:readBook,isSuccess:success,isError:error}] = useAddToReadingMutation()
+console.log(readBook)
   const handleDeleteBook =() => {
-   if(book?.data?._id)deleteBook(book?.data?._id)
-   toast("Delete", {duration:3000});
+    const agree = confirm("Are you sure delete this book?");
+    if (agree) {
+      if(book?.data?._id)deleteBook(book?.data?._id)
+       toast("Delete", {duration:3000});
+    }
+  
   };
+
+  const handelReadingList = ()=>{
+    if(!email){
+      navigate('/login')
+      toast('Please login',{duration:2000})
+    }else {
+    addToReadinglist({...book.data,isReading:true,isFinished:false})
+  }
+  }
+  useEffect(()=>{
+    if(success){
+      toast('Added Reading list',{duration:2000})
+    }if(error){
+      toast('Something want to wrong!')
+    }
+  },[success,error])
 
   useEffect(()=>{
     if(isSuccess){
@@ -39,17 +59,21 @@ const BookDetails = () => {
       </div>
         <img src={book?.data?.thumbnail} alt={book?.data?.title} className="w-64 h-auto mb-4" />
        </div>
-     
+     {
+      email &&  email !== book?.data?.userEmail && <div className="flex justify-between items-center mt-4">
+      <Link to={`/add-book`}>
+      <Button  color='success'> <AiOutlineEdit className="mr-2" /> Add Book</Button>
+      </Link>
+      <Button onClick={handelReadingList} > <AiOutlineEdit className="mr-2" /> Read Book</Button>
+      </div>
+     }
        {
-        user.email === book?.data?.userEmail && <div className="flex justify-between items-center mt-4">
+        email === book?.data?.userEmail && <div className="flex justify-between items-center mt-4">
         <Link to={`/edit-book/${bookId}`}>
         <Button  color='success'> <AiOutlineEdit className="mr-2" /> Edit Book</Button>
         </Link>
-          
-         <button onClick={handleDeleteBook}>
-
-         <Button  color='danger'> <AiOutlineDelete className="mr-2" /> Delete Book</Button>
-         </button>
+         <Button onClick={handleDeleteBook}  color='danger'> <AiOutlineDelete className="mr-2" /> Delete Book</Button>
+        
        </div>
        }
        {isLoading && <LoadingSpinner/>}

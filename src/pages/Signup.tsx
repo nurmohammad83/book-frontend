@@ -1,46 +1,44 @@
-import  { FormEvent } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import  toast from 'react-hot-toast'
-import { createUser } from '../redux/features/user/userSlice';
-import { useAppDispatch } from '../redux/hook';
-import TextInput from '../components/TextInput';
-
+import {useEffect} from 'react'
+import { useForm } from 'react-hook-form';
+import { useSignupMutation } from '../redux/features/auth/authApislice';
+import { ISignUp } from '../types';
 
 const SignUp = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-
+  const { register, handleSubmit, formState: { errors }, } = useForm<ISignUp>();
   const from = location.state?.from?.pathname || '/';
 
-  const handleSignUp = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const email = (form.email as HTMLInputElement).value;
-    const password = (form.password as HTMLInputElement).value;
-    const confirm = (form.confirm as HTMLInputElement).value;
+  const [signUp, {isSuccess}] = useSignupMutation()
+  const handleSignUp = (data:ISignUp) => {
+   const {email,password,confirmpassword}=data
     console.log(email, password, confirm);
     if (password.length < 6) {
       toast("Password must be 6 character", {duration:2000});
-
       return;
-    }
-    if (password !== confirm) {
+    }if (password !== confirmpassword) {
       toast("Password did not match", {duration:2000});
       return;
-    } else {
-      dispatch(createUser({ email: email, password: password }));
-      navigate(from, { replace: true });
-      toast("Sign up Successfully", {duration:2000});
-      form.reset();
+    }else {
+      signUp(data)
+     
     }
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate(from, { replace: true });
+      toast("Sign up Successfully", {duration:2000});
+    }
+  }, [isSuccess,navigate,from]);
 
   return (
     <div className="w-full my-5 mx-auto max-w-md p-8 space-y-3 rounded-xl bg-gray-300 dark:text-gray-100">
       <h1 className="text-2xl font-bold text-center">Sign Up</h1>
       <form
-        onSubmit={handleSignUp}
+        onSubmit={handleSubmit(handleSignUp)}
         noValidate
         action=""
         className="space-y-6 ng-untouched ng-pristine ng-valid"
@@ -49,26 +47,21 @@ const SignUp = () => {
           <label htmlFor="username" className="block dark:text-gray-400">
             Email
           </label>
-         <TextInput  type="text"
-            name="email"
-            placeholder='Email'
-            id="email"/>
+          <input type="email"  {...register("email", { required: true })}  placeholder="Email " className="input input-bordered border-2 w-full bg-[#fff]"/>
+          {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
         </div>
         <div className="space-y-1 text-sm">
           <label htmlFor="password" className="block dark:text-gray-400">
             Password
           </label>
-         <TextInput  type="password"
-            name="password"
-            id="password"
-            placeholder="Password"/>
+          <input type="password"  {...register("password", { required: true },)}  placeholder="Password " className="input input-bordered border-2 w-full bg-[#fff]"/>
+          {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
+        </div>
+        <div className="space-y-1 text-sm">
           <label htmlFor="password" className="block dark:text-gray-400">
-            Confirm Password
+            Password
           </label>
-          <TextInput type="password"
-          placeholder='Confirm  Password'
-            name="confirm"
-            id="confirm"/>
+          <input type="password"  {...register("confirmpassword", { required:true},)}  placeholder="Confirm Password " className="input input-bordered border-2 w-full bg-[#fff]"/>
         </div>
         <button
           type="submit"

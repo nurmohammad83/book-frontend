@@ -7,7 +7,7 @@ interface IProps {
     id:string
 }
 const Reviews = ({id}:IProps) => {
-    const {user}=useAppSelector(state=>state.user)
+    const {email}=useAppSelector(state=>state.auth)
     const {data} = useGetReviewsQuery(id)
     const [reviewText, setReviewText] = useState<string>('');
     console.log(reviewText)
@@ -29,7 +29,7 @@ const Reviews = ({id}:IProps) => {
     <TextArea  placeholder="Write your review..."
       value={reviewText}
       onChange={(e) => setReviewText(e.target.value)}/>
-    <Button  disabled={!user.email ? true: false} className={`${!user.email ? ' cursor-not-allowed':''}`} type='submit'> Submit Review</Button>
+    <Button  disabled={!email ? true: false} className={`${!email ? ' cursor-not-allowed':''}`} type='submit'> Submit Review</Button>
      
    
   </form>

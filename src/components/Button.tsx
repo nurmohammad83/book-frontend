@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ButtonHTMLAttributes, ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 
 interface IColors {
@@ -9,31 +9,26 @@ interface IVariants {
   [key: string]: string;
 }
 
-interface IProps {
-    disabled?:boolean
-  type?: "button" | "submit" | "reset" | undefined;
+interface IProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "color"> {
+  disabled?: boolean;
   color?: keyof IColors;
   variant?: keyof IVariants;
   children: ReactNode;
   className?: string;
-  onClick?: () => void;
 }
 
-const Button = ({
-disabled = false,
-  type,
+const Button: React.FC<IProps> = ({
+  disabled = false,
   color = "primary",
   variant = "filled",
   children,
   className,
-}: IProps) => {
+  ...props
+}) => {
   const colors: IColors = {
-    primary:
-      "hover:bg-blue-600 bg-blue-500",
-    danger:
-      "hover:bg-red-600 bg-red-500",
-    success:
-      "hover:bg-yellow-600 bg-yellow-500",
+    primary: "hover:bg-blue-600 bg-blue-500",
+    danger: "hover:bg-red-600 bg-red-500",
+    success: "hover:bg-yellow-600 bg-yellow-500",
   };
 
   const variants: IVariants = {
@@ -43,14 +38,13 @@ disabled = false,
 
   return (
     <button
-      type={type}
-      className={twMerge(
-        "flex items-center px-4 py-2  text-white rounded ",
-        colors[color],
-        variants[variant],
-        className
+    className={twMerge(
+      "flex items-center px-4 py-2 text-white rounded",
+      colors[color],
+      variants[variant],
+      className
       )}
-      
+      {...props}
       disabled={disabled}
     >
       {children}
